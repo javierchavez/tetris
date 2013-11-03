@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,17 +14,15 @@ import java.awt.event.KeyListener;
  */
 public class Board extends JPanel{
 
-    private static final int BOARDHEIGHT = 22;
-    private static final int BOARDWIDTH = 10;
-    public static final int CELL_SIZE = 30;
-    public static final int MAX_SHAPE_CELLS = 6;
+    private static final int BOARD_HEIGHT = 22;
+    private static final int BOARD_WIDTH = 10;
 
     private Block[][] blocks;
     private Object2D currentShape;
 
 
     public Board(){
-        this.blocks = new Block[BOARDHEIGHT][BOARDWIDTH];
+        this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         setFocusable(true);
         addKeyListener(new KL());
 
@@ -45,10 +42,10 @@ public class Board extends JPanel{
         int width = getWidth ( );
         int height = getHeight ( );
         System.out.print(width + " " + height);
-        for ( int row = 0; row <= BOARDHEIGHT; row++ ) {
+        for ( int row = 0; row <= BOARD_HEIGHT; row++ ) {
 
             // Draw the hori lines
-            g.drawLine (0, row * (height/BOARDHEIGHT), width, row * (height/BOARDHEIGHT));
+            g.drawLine (0, row * (height/BOARD_HEIGHT), width, row * (height/BOARD_HEIGHT));
 
 
             // Draw the vertical lines
@@ -69,8 +66,8 @@ public class Board extends JPanel{
         int height = getHeight ( );
 
 
-        int cellSizeW = width/BOARDWIDTH;
-        int cellSiceH = height/BOARDHEIGHT;
+        int cellSizeW = width/BOARD_WIDTH;
+        int cellSiceH = height/BOARD_HEIGHT;
 
 
 
@@ -78,8 +75,8 @@ public class Board extends JPanel{
             for (int col = 0; col < dim.getWidth(); ++col) {
                 Block b = currentShape.getBlockAt(row, col);
                 if(b != null) {
-                    int x = (width/BOARDWIDTH)*col;
-                    int y = (height/BOARDHEIGHT)*row;
+                    int x = (width/BOARD_WIDTH)*col;
+                    int y = (height/BOARD_HEIGHT)*row;
                     b.paint(g,x,y,cellSizeW,cellSiceH);
                 }
             }
@@ -106,19 +103,19 @@ public class Board extends JPanel{
         int height = getHeight ( );
 //        int cellsice = ((width/BOARDWIDTH)*(height/BOARDHEIGHT))/32;
 
-        int cellSizeW = width/BOARDWIDTH;
-        int cellSiceH = height/BOARDHEIGHT;
+        int cellSizeW = width/BOARD_WIDTH;
+        int cellSiceH = height/BOARD_HEIGHT;
 
 
-        for( int row = 0; row < BOARDHEIGHT; row++ ){
-            for ( int col = 0; col < BOARDWIDTH; col++ ){
+        for( int row = 0; row < BOARD_HEIGHT; row++ ){
+            for ( int col = 0; col < BOARD_WIDTH; col++ ){
 
                 if(blocks[row][col] != null){
 
                     Block b =  blocks[row][col];
 
-                    int x = (width/BOARDWIDTH)*col;
-                    int y = (height/BOARDHEIGHT)*row;
+                    int x = (width/BOARD_HEIGHT)*col;
+                    int y = (height/BOARD_WIDTH)*row;
                     b.paint(g,x,y,cellSizeW,cellSiceH);
 
 
