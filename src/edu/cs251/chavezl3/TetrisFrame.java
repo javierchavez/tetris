@@ -11,11 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 /**
- * Created with IntelliJ IDEA.
- * User: javierAle
- * Date: 11/2/13
- * Time: 12:48 AM
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Javier Chavez
+ *
+ *
  */
 public class TetrisFrame extends JFrame{
 

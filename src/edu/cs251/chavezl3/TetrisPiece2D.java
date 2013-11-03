@@ -3,7 +3,7 @@ package edu.cs251.chavezl3;
 /**
  * Class contains information about the L block
  * @author Javier Chavez
- * @assignment Lab3  Part 1 - Tetris Blocks
+ *
  *
  */
 public abstract class TetrisPiece2D implements Object2D{

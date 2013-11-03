@@ -6,11 +6,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Created with IntelliJ IDEA.
- * User: javierAle
- * Date: 11/2/13
- * Time: 12:39 AM
- * To change this template use File | Settings | File Templates.
+ *
+ * @author Javier Chavez
+ *
+ *
  */
 public class Board extends JPanel{
 
