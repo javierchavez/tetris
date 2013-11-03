@@ -16,7 +16,6 @@ public class Board extends JPanel{
 
     private static final int BOARD_HEIGHT = 22;
     private static final int BOARD_WIDTH = 10;
-    private boolean paintPiece = false;
 
     private Block[][] blocks;
     private Object2D currentShape;
@@ -34,8 +33,6 @@ public class Board extends JPanel{
 
     public void addShape(Object2D s){
         currentShape = s;
-
-
     }
 
 
@@ -60,12 +57,10 @@ public class Board extends JPanel{
 
         // Then draw the contents
 
-        if (paintPiece){
 
-        } else{
-            drawBoard ((Graphics2D) g );
-            drawCurrentPiece((Graphics2D) g);
-        }
+        drawBoard ((Graphics2D) g );
+        drawCurrentPiece((Graphics2D) g);
+
     }
 
     private void drawCurrentPiece(Graphics2D g) {
@@ -107,7 +102,7 @@ public class Board extends JPanel{
 //        int cellsice = ((width/BOARDWIDTH)*(height/BOARDHEIGHT))/32;
 
         int cellSizeW = width/BOARD_WIDTH;
-        int cellSiceH = height/BOARD_HEIGHT;
+        int cellSizeH = height/BOARD_HEIGHT;
 
 
         for( int row = 0; row < BOARD_HEIGHT; row++ ){
@@ -119,7 +114,7 @@ public class Board extends JPanel{
 
                     int x = (width/BOARD_HEIGHT)*col;
                     int y = (height/BOARD_WIDTH)*row;
-                    b.paint(g,x,y,cellSizeW,cellSiceH);
+                    b.paint(g,x,y,cellSizeW,cellSizeH);
 
 
                 }
@@ -134,7 +129,6 @@ public class Board extends JPanel{
     }
     private void moveRight(){
         movement.x  += blockScaledDim.width;
-//        System.out.print("After:"+squareSizeAvg);
         repaint();
 
     }
@@ -157,7 +151,7 @@ public class Board extends JPanel{
     private class KL extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
+
             if (e.getKeyCode() == e.VK_UP){
                 System.out.print("up");
 
