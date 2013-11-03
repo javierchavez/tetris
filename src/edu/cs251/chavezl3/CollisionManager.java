@@ -13,8 +13,10 @@ public class CollisionManager {
     private static final int BOARD_HEIGHT = 22;
     private static final int BOARD_WIDTH = 10;
 
-    public boolean isMovable(Object2D piece, Block[][] board){
-        return false; //isLeftOpen(piece,board);// || isRightOpen(piece,board) || isRotatable(piece, board);
+    public boolean isMovable(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints){
+        return  isLeftOpen(piece,board,currentShapePoints) ||
+                isRightOpen(piece,board,currentShapePoints) ||
+                isBottomOpen(piece, board, currentShapePoints);
 
     }
     public boolean isRightOpen(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints){
@@ -31,7 +33,7 @@ public class CollisionManager {
                     ++x;
 
                     System.out.println("TEST=Location: " + x + " " + y);
-                    if (board[y][x] == null && x < BOARD_WIDTH){
+                    if (x < BOARD_WIDTH && board[y][x] == null && x < BOARD_WIDTH){
                         isOpen = true;
                     }
                     else{
@@ -58,7 +60,7 @@ public class CollisionManager {
                     --x;
 
                     System.out.println("TEST=Location: " + x + " " + y);
-                    if (board[y][x] == null && x < BOARD_WIDTH){
+                    if (x >= 0 && board[y][x] == null && x < BOARD_WIDTH){
                         isOpen = true;
                     }
                     else{
@@ -114,7 +116,7 @@ public class CollisionManager {
 
                     ++y;
 
-                    if (board[y][x] == null && y < BOARD_HEIGHT){
+                    if (y < BOARD_HEIGHT && board[y][x] == null && y < BOARD_HEIGHT){
                         isOpen = true;
                     }
                     else{

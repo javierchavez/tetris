@@ -137,10 +137,11 @@ public class Board extends JPanel{
 
     private void commit(){
 
+        System.out.print("Commit");
         for( int row = 0; row < currentShape.getDimension().height; row++ ){
             for ( int col = 0; col < currentShape.getDimension().width; col++ ){
 
-//                blocks[]
+
             }
         }
 
@@ -164,6 +165,8 @@ public class Board extends JPanel{
         if (collisionManager.isBottomOpen(currentShape,blocks,currentShapePoints)){
             movement.y  += blockScaledDim.height;
             repaint();
+        } else{
+            commit();
         }
     }
 
