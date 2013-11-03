@@ -16,15 +16,19 @@ public class Board extends JPanel{
 
     private static final int BOARD_HEIGHT = 22;
     private static final int BOARD_WIDTH = 10;
+    private boolean paintPiece = false;
 
     private Block[][] blocks;
     private Object2D currentShape;
+    private Point movement = new Point();
+    private Dimension blockScaledDim = new Dimension ();
 
 
     public Board(){
         this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         setFocusable(true);
         addKeyListener(new KL());
+        movement.setLocation(0,0);
 
     }
 
@@ -38,23 +42,30 @@ public class Board extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        int width = getWidth ( );
-        int height = getHeight ( );
-        System.out.print(width + " " + height);
-        for ( int row = 0; row <= BOARD_HEIGHT; row++ ) {
-
-            // Draw the hori lines
-            g.drawLine (0, row * (height/BOARD_HEIGHT), width, row * (height/BOARD_HEIGHT));
-
-
-            // Draw the vertical lines
-            g.drawLine (row * (width/10), 0, row * (width/10), height);
-        }
+//
+//        g.setColor(Color.white);
+//
+//        int width = getWidth ( );
+//        int height = getHeight ( );
+//        System.out.print(width + " " + height);
+//        for ( int row = 0; row <= BOARD_HEIGHT; row++ ) {
+//
+//            // Draw the hori lines
+//           g.drawLine (0, row * (height/BOARD_HEIGHT), width, row * (height/BOARD_HEIGHT));
+//
+//
+//            // Draw the vertical lines
+//            g.drawLine (row * (width/10), 0, row * (width/10), height);
+//        }
 
         // Then draw the contents
-        drawBoard ((Graphics2D) g );
-        drawCurrentPiece((Graphics2D) g);
+
+        if (paintPiece){
+
+        } else{
+            drawBoard ((Graphics2D) g );
+            drawCurrentPiece((Graphics2D) g);
+        }
     }
 
     private void drawCurrentPiece(Graphics2D g) {
@@ -67,7 +78,8 @@ public class Board extends JPanel{
 
 
         int cellSizeW = width/BOARD_WIDTH;
-        int cellSiceH = height/BOARD_HEIGHT;
+        int cellSizeH = height/BOARD_HEIGHT;
+        blockScaledDim.setSize(cellSizeW,cellSizeH);
 
 
 
@@ -77,20 +89,11 @@ public class Board extends JPanel{
                 if(b != null) {
                     int x = (width/BOARD_WIDTH)*col;
                     int y = (height/BOARD_HEIGHT)*row;
-                    b.paint(g,x,y,cellSizeW,cellSiceH);
+                    System.out.println("Location: " + x + " " + y);
+
+                    b.paint(g, x+movement.x, y+movement.y, cellSizeW, cellSizeH);
                 }
             }
-        }
-
-
-        for (int y = 0; y < blocks.length; y++){
-//            System.out.print(blocks[y]);
-            for (int x = 0; x < blocks[y].length; x++){
-                System.out.print(blocks[y][x]);
-
-
-            }
-            System.out.print("\n");
         }
 
     }
@@ -129,6 +132,27 @@ public class Board extends JPanel{
     private void commit(Object2D p){
 
     }
+    private void moveRight(){
+        movement.x  += blockScaledDim.width;
+//        System.out.print("After:"+squareSizeAvg);
+        repaint();
+
+    }
+    private void moveLeft(){
+        movement.x  -= blockScaledDim.width;
+        repaint();
+
+    }
+    private void moveDown(){
+        movement.y  += blockScaledDim.height;
+        repaint();
+    }
+
+    private void rotate(){
+        currentShape.rotate();
+        repaint();
+
+    }
 
     private class KL extends KeyAdapter {
         @Override
@@ -136,18 +160,21 @@ public class Board extends JPanel{
             //To change body of implemented methods use File | Settings | File Templates.
             if (e.getKeyCode() == e.VK_UP){
                 System.out.print("up");
-                currentShape.rotate();
 
-                repaint();
+                rotate();
+
             } else if (e.getKeyCode() == e.VK_RIGHT){
                 System.out.print("right");
 
-            } else if (e.getKeyCode() == e.VK_LEFT){
+                moveRight();
 
+            } else if (e.getKeyCode() == e.VK_LEFT){
+                moveLeft();
 
 
                 System.out.print("left");
             } else if (e.getKeyCode() == e.VK_DOWN){
+                moveDown();
 
                 System.out.print("down");
             }
@@ -161,4 +188,16 @@ public class Board extends JPanel{
         public void keyReleased(KeyEvent e) {}
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int y = 0; y < blocks.length; y++){
+            for (int x = 0; x < blocks[y].length; x++){
+                stringBuilder.append(blocks[y][x]);
+            }
+            stringBuilder.append("\n");
+        }
+
+        return stringBuilder.toString();
+    }
 }
