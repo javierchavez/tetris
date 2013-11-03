@@ -58,7 +58,7 @@ public class TetrisFrame extends JFrame{
 
         //create a panel to show main game with black background
         tetrisPanel = new Board();
-        tetrisPanel.addShape(new EyeShape(new Block(Color.CYAN, Color.BLACK)));
+        tetrisPanel.addShape(new ZeeShape(new Block(Color.RED, Color.BLACK)));
         tetrisPanel.setBackground(Color.BLACK);
 
 //        System.out.print("TETFR" + tetrisPanel.getWidth()+ " " + tetrisPanel.getHeight());

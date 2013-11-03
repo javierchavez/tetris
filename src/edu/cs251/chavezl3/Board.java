@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Board extends JPanel{
 
     private Block[][] blocks;
     private Object2D currentShape;
+    private Map<String,Integer> currentShapePoints;
     private Point movement = new Point();
     private Dimension blockScaledDim = new Dimension ();
     private CollisionManager collisionManager = new CollisionManager();
@@ -28,6 +31,7 @@ public class Board extends JPanel{
         setFocusable(true);
         addKeyListener(new KL());
         movement.setLocation(0,0);
+
 
     }
 
@@ -75,6 +79,9 @@ public class Board extends JPanel{
         int cellSizeW = width/BOARD_WIDTH;
         int cellSizeH = height/BOARD_HEIGHT;
         blockScaledDim.setSize(cellSizeW,cellSizeH);
+        currentShapePoints = new HashMap<String, Integer>();
+        currentShapePoints.put("width",cellSizeW);
+        currentShapePoints.put("height",cellSizeH);
 
 
 
@@ -85,11 +92,15 @@ public class Board extends JPanel{
                     int x = (width/BOARD_WIDTH)*col;
                     int y = (height/BOARD_HEIGHT)*row;
                     System.out.println("Location: " + x/blockScaledDim.getWidth() + " " + y/blockScaledDim.getHeight());
+//                    currentShape.getBlockAt(row,col).setData(x+movement.x, y+movement.y, cellSizeW, cellSizeH);
+                    currentShapePoints.put(row + ""+col+"x",x+movement.x);
+                    currentShapePoints.put(row + ""+col+"y",y+movement.y);
 
-                    b.paint(g, x+movement.x, y+movement.y, cellSizeW, cellSizeH);
+                    currentShape.getBlockAt(row,col).paint(g, x + movement.x, y + movement.y, cellSizeW, cellSizeH);
                 }
             }
         }
+//        System.out.print(width);
 
     }
 
@@ -135,23 +146,32 @@ public class Board extends JPanel{
 
     }
     private void moveRight(){
-        movement.x  += blockScaledDim.width;
-        repaint();
+        if (collisionManager.isRightOpen(currentShape,blocks,currentShapePoints)){
+            movement.x  += blockScaledDim.width;
+            repaint();
+        }
+
 
     }
     private void moveLeft(){
-        movement.x  -= blockScaledDim.width;
-        repaint();
+        if (collisionManager.isLeftOpen(currentShape,blocks,currentShapePoints)){
+            movement.x  -= blockScaledDim.width;
+            repaint();
+        }
 
     }
     private void moveDown(){
-        movement.y  += blockScaledDim.height;
-        repaint();
+        if (collisionManager.isBottomOpen(currentShape,blocks,currentShapePoints)){
+            movement.y  += blockScaledDim.height;
+            repaint();
+        }
     }
 
     private void rotate(){
-        currentShape.rotate();
-        repaint();
+        if (collisionManager.isRotatable(currentShape,blocks,currentShapePoints)){
+            currentShape.rotate();
+            repaint();
+        }
 
     }
 

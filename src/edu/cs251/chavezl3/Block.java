@@ -50,6 +50,8 @@ public class Block {
      * @param cellSizeH The height of the square (for scaling)
      */
     public void paint(Graphics g, int x, int y, int cellSizeW, int cellSizeH) {
+        //point.setLocation(x, y);
+        //blockSDim.setSize(cellSizeW,cellSizeH);
         g.setColor(fillColor);
 
         //g.fillRect(x, y, cellSize, cellSize);
@@ -57,9 +59,10 @@ public class Block {
 
         g.setColor(lineColor);
         //g.drawRect(x, y, cellSize, cellSize);
-        g.drawRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW+cellSizeH/2)/4, (cellSizeW+cellSizeH/2)/4);
+        g.drawRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW + cellSizeH / 2) / 4, (cellSizeW + cellSizeH / 2) / 4);
 
     }
+
 
 
     @Override
@@ -67,4 +70,6 @@ public class Block {
 		// TODO Auto-generated method stub
 		return "[]";
 	}
+
+
 }
