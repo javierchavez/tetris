@@ -46,6 +46,8 @@ public class Block {
      * @param g Graphics object to do the painting
      * @param x The x coord of the top left corner of the block.
      * @param y The y coord of the top left corning of the block.
+     * @param cellSizeW The width of the square (for scaling)
+     * @param cellSizeH The height of the square (for scaling)
      */
     public void paint(Graphics g, int x, int y, int cellSizeW, int cellSizeH) {
         g.setColor(fillColor);

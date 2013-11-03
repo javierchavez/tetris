@@ -4,12 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 /**
- * Created with IntelliJ IDEA.
- * User: javierAle
- * Date: 11/2/13
- * Time: 12:49 AM
- * To change this template use File | Settings | File Templates.
+ * Driver for testing tetris game pieces.
+ * @author Javier Chavez
  */
+
 public class Tetris {
 
     public static void main(String[] args) {
