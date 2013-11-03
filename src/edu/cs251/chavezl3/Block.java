@@ -33,14 +33,34 @@ public class Block {
      */
     public void paint(Graphics g, int x, int y, int cellSize) {
         g.setColor(fillColor);
-        //g.fillRect(x, y, cellSize, cellSize);
+
         g.fillRoundRect(x, y, cellSize, cellSize, cellSize/4, cellSize/4);
+
         g.setColor(lineColor);
         //g.drawRect(x, y, cellSize, cellSize);
         g.drawRoundRect(x, y, cellSize, cellSize, cellSize/4, cellSize/4);
     }
-	
-	@Override
+
+    /**
+     * Paint this Block at the given position
+     * @param g Graphics object to do the painting
+     * @param x The x coord of the top left corner of the block.
+     * @param y The y coord of the top left corning of the block.
+     */
+    public void paint(Graphics g, int x, int y, int cellSizeW, int cellSizeH) {
+        g.setColor(fillColor);
+
+        //g.fillRect(x, y, cellSize, cellSize);
+        g.fillRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW+cellSizeH/2)/4, (cellSizeW+cellSizeH/2)/4);
+
+        g.setColor(lineColor);
+        //g.drawRect(x, y, cellSize, cellSize);
+        g.drawRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW+cellSizeH/2)/4, (cellSizeW+cellSizeH/2)/4);
+
+    }
+
+
+    @Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "[]";

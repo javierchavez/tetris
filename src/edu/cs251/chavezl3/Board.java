@@ -21,6 +21,7 @@ public class Board extends JPanel{
     public static final int MAX_SHAPE_CELLS = 6;
 
     private Block[][] blocks;
+    private Object2D currentShape;
 
 
     public Board(){
@@ -31,27 +32,7 @@ public class Board extends JPanel{
     }
 
     public void addShape(Object2D s){
-        Object2D.Dimension2D dim = s.getDimension();
-
-
-        //center the block
-        for (int y = 0; y < dim.getHeight(); y++){
-
-            for (int x = 0; x < dim.getWidth(); x++){
-                blocks[(dim.getHeight())-y][(5 +(dim.getWidth()/2))-x] = s.getBlockAt(y,x);
-
-
-            }
-        }
-        for (int y = 0; y < blocks.length; y++){
-//            System.out.print(blocks[y]);
-            for (int x = 0; x < blocks[y].length; x++){
-                System.out.print(blocks[y][x]);
-
-
-            }
-            System.out.print("\n");
-        }
+        currentShape = s;
 
 
     }
@@ -59,7 +40,8 @@ public class Board extends JPanel{
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(Color.BLACK);
+        super.paintComponent(g);
+
         int width = getWidth ( );
         int height = getHeight ( );
         System.out.print(width + " " + height);
@@ -74,16 +56,58 @@ public class Board extends JPanel{
         }
 
         // Then draw the contents
-        drawBoard ( (Graphics2D) g );
+        drawBoard ((Graphics2D) g );
+        drawCurrentPiece((Graphics2D) g);
+    }
+
+    private void drawCurrentPiece(Graphics2D g) {
+        super.paintComponent(g);
+
+        Object2D.Dimension2D dim = currentShape.getDimension();
+
+        int width = getWidth ( );
+        int height = getHeight ( );
+
+
+        int cellSizeW = width/BOARDWIDTH;
+        int cellSiceH = height/BOARDHEIGHT;
+
+
+
+        for(int row = 0; row < dim.getHeight(); ++row) {
+            for (int col = 0; col < dim.getWidth(); ++col) {
+                Block b = currentShape.getBlockAt(row, col);
+                if(b != null) {
+                    int x = (width/BOARDWIDTH)*col;
+                    int y = (height/BOARDHEIGHT)*row;
+                    b.paint(g,x,y,cellSizeW,cellSiceH);
+                }
+            }
+        }
+
+
+        for (int y = 0; y < blocks.length; y++){
+//            System.out.print(blocks[y]);
+            for (int x = 0; x < blocks[y].length; x++){
+                System.out.print(blocks[y][x]);
+
+
+            }
+            System.out.print("\n");
+        }
+
     }
 
     private void drawBoard(Graphics2D g) {
+        super.paintComponent(g);
 
 
         int width = getWidth ( );
         int height = getHeight ( );
-        int cellsice = ((width/BOARDWIDTH)*(height/BOARDHEIGHT))/32;
+//        int cellsice = ((width/BOARDWIDTH)*(height/BOARDHEIGHT))/32;
 
+        int cellSizeW = width/BOARDWIDTH;
+        int cellSiceH = height/BOARDHEIGHT;
 
 
         for( int row = 0; row < BOARDHEIGHT; row++ ){
@@ -92,12 +116,10 @@ public class Board extends JPanel{
                 if(blocks[row][col] != null){
 
                     Block b =  blocks[row][col];
-//                    int x = ((col)*(height/BOARDHEIGHT));
 
                     int x = (width/BOARDWIDTH)*col;
                     int y = (height/BOARDHEIGHT)*row;
-                    b.paint(g,x,y,cellsice);
-//                    System.out.print("here");
+                    b.paint(g,x,y,cellSizeW,cellSiceH);
 
 
                 }
@@ -107,17 +129,25 @@ public class Board extends JPanel{
         }
     }
 
+    private void commit(Object2D p){
+
+    }
+
     private class KL extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             //To change body of implemented methods use File | Settings | File Templates.
             if (e.getKeyCode() == e.VK_UP){
                 System.out.print("up");
+                currentShape.rotate();
 
+                repaint();
             } else if (e.getKeyCode() == e.VK_RIGHT){
                 System.out.print("right");
 
             } else if (e.getKeyCode() == e.VK_LEFT){
+
+
 
                 System.out.print("left");
             } else if (e.getKeyCode() == e.VK_DOWN){
