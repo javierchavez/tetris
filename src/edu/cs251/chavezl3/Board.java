@@ -21,6 +21,7 @@ public class Board extends JPanel{
     private Object2D currentShape;
     private Point movement = new Point();
     private Dimension blockScaledDim = new Dimension ();
+    private CollisionManager collisionManager = new CollisionManager();
 
 
     public Board(){
@@ -39,9 +40,9 @@ public class Board extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-//
-//        g.setColor(Color.white);
-//
+
+
+//        g.setColor(Color.BLACK);
 //        int width = getWidth ( );
 //        int height = getHeight ( );
 //        System.out.print(width + " " + height);
@@ -54,8 +55,8 @@ public class Board extends JPanel{
 //            // Draw the vertical lines
 //            g.drawLine (row * (width/10), 0, row * (width/10), height);
 //        }
-
-        // Then draw the contents
+//
+//        // Then draw the contents
 
 
         drawBoard ((Graphics2D) g );
@@ -84,7 +85,7 @@ public class Board extends JPanel{
                 if(b != null) {
                     int x = (width/BOARD_WIDTH)*col;
                     int y = (height/BOARD_HEIGHT)*row;
-                    System.out.println("Location: " + x + " " + y);
+                    System.out.println("Location: " + x/blockScaledDim.getWidth() + " " + y/blockScaledDim.getHeight());
 
                     b.paint(g, x+movement.x, y+movement.y, cellSizeW, cellSizeH);
                 }
@@ -124,7 +125,14 @@ public class Board extends JPanel{
         }
     }
 
-    private void commit(Object2D p){
+    private void commit(){
+
+        for( int row = 0; row < currentShape.getDimension().height; row++ ){
+            for ( int col = 0; col < currentShape.getDimension().width; col++ ){
+
+//                blocks[]
+            }
+        }
 
     }
     private void moveRight(){
@@ -152,22 +160,22 @@ public class Board extends JPanel{
         @Override
         public void keyPressed(KeyEvent e) {
 
-            if (e.getKeyCode() == e.VK_UP){
+            if (e.getKeyCode() == KeyEvent.VK_UP){
                 System.out.print("up");
 
                 rotate();
 
-            } else if (e.getKeyCode() == e.VK_RIGHT){
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
                 System.out.print("right");
 
                 moveRight();
 
-            } else if (e.getKeyCode() == e.VK_LEFT){
+            } else if (e.getKeyCode() == KeyEvent.VK_LEFT){
                 moveLeft();
 
 
                 System.out.print("left");
-            } else if (e.getKeyCode() == e.VK_DOWN){
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN){
                 moveDown();
 
                 System.out.print("down");
