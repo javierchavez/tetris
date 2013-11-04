@@ -21,10 +21,14 @@ import javax.swing.border.TitledBorder;
 public class TetrisFrame extends JFrame implements KeyListener{
 
     private static final long serialVersionUID = -7803583554407246969L;
-    Board tetrisPanel = new Board();
+    Board tetrisPanel = new Board(this);
     private static final int DELAY = 1000;
     private boolean isRunning = false;
     JButton startPauseButton;
+    JLabel scoreNumLbl;
+    private int score = 0;
+    private PieceGenerator generator = new PieceGenerator();
+
 
     private Timer timer;
 
@@ -38,7 +42,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
         timer.setInitialDelay(0);
         addKeyListener(this);
         //
-        JLabel scoreNumLbl = new JLabel("0");
+        scoreNumLbl = new JLabel("0");
         JLabel linesNumLbl = new JLabel("0");
         JLabel levelNumLbl = new JLabel("1");
         JPanel nextShapePanel = new JPanel();
@@ -78,10 +82,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
         });
 
         //create a panel to show main game with black background
-        //tetrisPanel.addShape(new ZeeShape(new Block(Color.RED, Color.BLACK)));
         tetrisPanel.setBackground(Color.BLACK);
-//        System.out.print("TETFR" + tetrisPanel.getWidth()+ " " + tetrisPanel.getHeight());
-
 
         //main container only hold tetris and right panel in grid form
         Container pane = this.getContentPane();
@@ -128,7 +129,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     private void runGame(){
 
-        tetrisPanel.addShape(new EllShape(new Block(Color.ORANGE, Color.BLACK)));
+        tetrisPanel.addShape(new PieceGenerator().nextShape());
         timer.start();
         this.requestFocus();
 
@@ -142,24 +143,17 @@ public class TetrisFrame extends JFrame implements KeyListener{
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_UP){
-            //System.out.print("up");
-
             tetrisPanel.rotate();
 
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            //System.out.print("right");
-
             tetrisPanel.moveRight();
 
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT){
             tetrisPanel.moveLeft();
 
-
-            //System.out.print("left");
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN){
             tetrisPanel.moveDown();
 
-            //System.out.print("down");
         }
     }
     @Override
@@ -169,5 +163,10 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    public void setScore(int score){
+        this.score += score;
+        scoreNumLbl.setText(String.valueOf(this.score));
+    }
 
 }

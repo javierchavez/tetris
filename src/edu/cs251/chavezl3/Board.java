@@ -23,19 +23,23 @@ public class Board extends JPanel implements ActionListener{
     private Point movement = new Point();
     private Dimension blockScaledDim = new Dimension ();
     private CollisionManager collisionManager = new CollisionManager();
-    PieceGenerator generator = new PieceGenerator();
+    private PieceGenerator generator = new PieceGenerator();
+    private TetrisFrame tetrisFrame;
 
 
 
 
-    public Board(){
+//    public Board(){
+//        setFocusable(true);
+//        this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
+//        movement.setLocation(0, 0);
+//    }
+
+    public Board(TetrisFrame tetrisFrame) {
+        this.tetrisFrame = tetrisFrame;
         setFocusable(true);
         this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
-//        this.addKeyListener(this);
         movement.setLocation(0, 0);
-
-
-
     }
 
     public void addShape(Object2D s){
@@ -58,24 +62,23 @@ public class Board extends JPanel implements ActionListener{
     private void drawBoard(Graphics2D g) {
         super.paintComponent(g);
 
-        Object2D.Dimension2D dim = currentShape.getDimension();
-
-        int width = getWidth ( );
+        int width = getWidth();
         int height = getHeight ( );
 
 
         int cellSizeW = width/BOARD_WIDTH;
         int cellSizeH = height/BOARD_HEIGHT;
 
+        //keep some information about the current piece that way we can scale and check for collisions
         blockScaledDim.setSize(cellSizeW,cellSizeH);
         currentShapePoints = new HashMap<String, Integer>();
         currentShapePoints.put("width",cellSizeW);
         currentShapePoints.put("height",cellSizeH);
 
 
-
-        for(int row = 0; row < dim.getHeight(); ++row) {
-            for (int col = 0; col < dim.getWidth(); ++col) {
+        //draw the piece that is currently moving
+        for(int row = 0; row < currentShape.getDimension().height; ++row) {
+            for (int col = 0; col < currentShape.getDimension().width; ++col) {
                 Block b = currentShape.getBlockAt(row, col);
                 if(b != null) {
                     int x = (width/BOARD_WIDTH)*col;
@@ -88,24 +91,19 @@ public class Board extends JPanel implements ActionListener{
                 }
             }
         }
-
+        // Draw the board (shapes already committed)
         for( int row = 0; row < BOARD_HEIGHT; row++ ){
             for ( int col = 0; col < BOARD_WIDTH; col++ ){
 
                 if(blocks[row][col] != null){
-
                     Block b =  blocks[row][col];
 
                     int x = (width/BOARD_WIDTH)*col;
                     int y = (height/BOARD_HEIGHT)*row;
-                    b.paint(g,x,y,cellSizeW,cellSizeH);
 
-
-
-                } else{
+                    b.paint(g,x, y, cellSizeW, cellSizeH);
 
                 }
-
             }
 
 
@@ -128,6 +126,7 @@ public class Board extends JPanel implements ActionListener{
 
             }
         }
+        tetrisFrame.setScore(10);
         currentShape = null;
 
     }
@@ -199,7 +198,20 @@ public class Board extends JPanel implements ActionListener{
         collisionManager = new CollisionManager();
         repaint();
 
-        System.out.println(this.toString());
+    }
+
+    public void checkRows(){
+        for( int row = 0; row < BOARD_HEIGHT; row++ ){
+            for ( int col = 0; col < BOARD_WIDTH; col++ ){
+
+                if(blocks[row][col] != null){
+
+
+                }
+            }
+
+
+        }
     }
 
 
