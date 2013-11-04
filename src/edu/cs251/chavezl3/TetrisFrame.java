@@ -19,45 +19,39 @@ import javax.swing.border.TitledBorder;
 public class TetrisFrame extends JFrame{
 
     private static final long serialVersionUID = -7803583554407246969L;
-    private JLabel scoreLabel, linesLabel, levelLabel;
-    private JButton startPauseButton;
-    private Board tetrisPanel;
-    private JPanel rightPanel, infoLabels, nextShapePanel, controlPanel;
-    private Color rightPanelColor = new Color(236, 240, 241);
-    private Font f = new Font("Dialog", Font.ITALIC, 20);
-
-    private JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
 
 
     public TetrisFrame(){
+        Color rightPanelColor = new Color(236, 240, 241);
+        Font f = new Font("Dialog", Font.ITALIC, 20);
 
         //
-        scoreNumLbl = new JLabel("0");
-        linesNumLbl = new JLabel("0");
-        levelNumLbl = new JLabel("1");
-        nextShapePanel = new JPanel();
-        controlPanel = new JPanel();
-        rightPanel = new JPanel();
+        JLabel scoreNumLbl = new JLabel("0");
+        JLabel linesNumLbl = new JLabel("0");
+        JLabel levelNumLbl = new JLabel("1");
+        JPanel nextShapePanel = new JPanel();
+        JPanel controlPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GridLayout(3,1));
         rightPanel.setBackground(rightPanelColor);
 
         // this will hold the number values
-        infoLabels = new JPanel();
+        JPanel infoLabels = new JPanel();
         infoLabels.setLayout(new GridLayout(6,1,0,0));
         infoLabels.setBackground(rightPanelColor);
 
 
         //create labels
-        scoreLabel = new JLabel("Score:");
+        JLabel scoreLabel = new JLabel("Score:");
         scoreLabel.setFont(f);
-        linesLabel = new JLabel("Lines:");
+        JLabel linesLabel = new JLabel("Lines:");
         linesLabel.setFont(f);
-        levelLabel = new JLabel("Level:");
+        JLabel levelLabel = new JLabel("Level:");
         levelLabel.setFont(f);
-        startPauseButton = new JButton("Start/Pause");
+        JButton startPauseButton = new JButton("Start/Pause");
 
         //create a panel to show main game with black background
-        tetrisPanel = new Board();
+        Board tetrisPanel = new Board();
         tetrisPanel.addShape(new ZeeShape(new Block(Color.RED, Color.BLACK)));
         tetrisPanel.setBackground(Color.BLACK);
 
