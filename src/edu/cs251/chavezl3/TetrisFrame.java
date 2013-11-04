@@ -25,12 +25,13 @@ public class TetrisFrame extends JFrame implements KeyListener{
     private static final int DELAY = 1000;
     private boolean isRunning = false;
     JButton startPauseButton;
-    JLabel scoreNumLbl;
+    JLabel scoreNumLbl, linesNumLbl;
     private int score = 0;
     private PieceGenerator generator = new PieceGenerator();
 
 
     private Timer timer;
+    private int lines;
 
 
     public TetrisFrame(){
@@ -43,7 +44,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
         addKeyListener(this);
         //
         scoreNumLbl = new JLabel("0");
-        JLabel linesNumLbl = new JLabel("0");
+        linesNumLbl = new JLabel("0");
         JLabel levelNumLbl = new JLabel("1");
         JPanel nextShapePanel = new JPanel();
         JPanel controlPanel = new JPanel();
@@ -167,6 +168,11 @@ public class TetrisFrame extends JFrame implements KeyListener{
     public void setScore(int score){
         this.score += score;
         scoreNumLbl.setText(String.valueOf(this.score));
+    }
+
+    public void setLines(int lines){
+        this.lines += lines;
+        linesNumLbl.setText(String.valueOf(this.lines));
     }
 
 }

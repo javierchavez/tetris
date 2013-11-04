@@ -25,6 +25,9 @@ public class Board extends JPanel implements ActionListener{
     private CollisionManager collisionManager = new CollisionManager();
     private PieceGenerator generator = new PieceGenerator();
     private TetrisFrame tetrisFrame;
+    private int multiplierScore = 1;
+    private int lines = 0;
+
 
 
 
@@ -126,7 +129,7 @@ public class Board extends JPanel implements ActionListener{
 
             }
         }
-        tetrisFrame.setScore(10);
+
         currentShape = null;
 
     }
@@ -154,6 +157,7 @@ public class Board extends JPanel implements ActionListener{
             repaint();
         } else{
             commit();
+            checkRows();
             resetCurrShape();
         }
 
@@ -199,19 +203,58 @@ public class Board extends JPanel implements ActionListener{
         repaint();
 
     }
+    private void checkRows(){
 
-    public void checkRows(){
+        boolean isRowFilled = false, wasFilled = false;
+
         for( int row = 0; row < BOARD_HEIGHT; row++ ){
             for ( int col = 0; col < BOARD_WIDTH; col++ ){
 
                 if(blocks[row][col] != null){
+                    isRowFilled  = true;
 
+                } else {
+                    isRowFilled = false;
+                    break;
 
                 }
             }
 
+            if(isRowFilled){
+                wasFilled = true;
+                adjustBoard(row);
+                multiplierScore++;
+                tetrisFrame.setLines(++lines);
+            }
 
         }
+        if (wasFilled ){
+            tetrisFrame.setScore(10*multiplierScore);
+            multiplierScore = 1;
+
+        }
+    }
+
+    private void adjustBoard(int row){
+        Block [][] tmp = new Block[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int y = 1; y < BOARD_HEIGHT; y++){
+            for (int x = 0; x < blocks[y].length; x++){
+                if (blocks[y][x] != null){
+                    if(y <= row){
+                        tmp[y][x] = blocks[y-1][x];
+
+                    }   else{
+                        tmp[y-1][x] = blocks[y-1][x];
+
+                    }
+                }
+
+            }
+
+        }
+        blocks = tmp;
+
+
     }
 
 
