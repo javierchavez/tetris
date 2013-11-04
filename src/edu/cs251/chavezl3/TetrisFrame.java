@@ -28,6 +28,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
     JLabel scoreNumLbl, linesNumLbl;
     private int score = 0;
     private PieceGenerator generator = new PieceGenerator();
+    private Object2D currentPiece;
 
 
     private Timer timer;
@@ -36,6 +37,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     public TetrisFrame(){
         setFocusable(true);
+        currentPiece = generator.nextShape();
 
         Color rightPanelColor = new Color(236, 240, 241);
         Font f = new Font("Dialog", Font.ITALIC, 20);
@@ -130,7 +132,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     private void runGame(){
 
-        tetrisPanel.addShape(new PieceGenerator().nextShape());
+        tetrisPanel.addShape(currentPiece);
         timer.start();
         this.requestFocus();
 
@@ -173,6 +175,10 @@ public class TetrisFrame extends JFrame implements KeyListener{
     public void setLines(int lines){
         this.lines += lines;
         linesNumLbl.setText(String.valueOf(this.lines));
+    }
+
+    public void setCurrentPiece(Object2D piece){
+        this.currentPiece = piece;
     }
 
 }

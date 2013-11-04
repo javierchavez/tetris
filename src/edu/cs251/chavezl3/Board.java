@@ -200,6 +200,7 @@ public class Board extends JPanel implements ActionListener{
         movement = new Point();
         blockScaledDim = new Dimension ();
         collisionManager = new CollisionManager();
+        tetrisFrame.setCurrentPiece(currentShape);
         repaint();
 
     }
