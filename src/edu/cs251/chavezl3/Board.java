@@ -207,8 +207,8 @@ public class Board extends JPanel implements ActionListener{
     private void checkRows(){
 
         boolean isRowFilled = false, wasFilled = false;
-
-        for( int row = 0; row < BOARD_HEIGHT; row++ ){
+        int row = 0;
+        for( row = 0; row < BOARD_HEIGHT; row++ ){
             for ( int col = 0; col < BOARD_WIDTH; col++ ){
 
                 if(blocks[row][col] != null){
@@ -222,15 +222,20 @@ public class Board extends JPanel implements ActionListener{
             }
 
             if(isRowFilled){
+
                 wasFilled = true;
                 adjustBoard(row);
+                row = 0;
                 multiplierScore++;
                 tetrisFrame.setLines(++lines);
+
             }
 
         }
         if (wasFilled ){
+            //send to main frame to be displayed to user
             tetrisFrame.setScore(10*multiplierScore);
+            //reset score
             multiplierScore = 1;
 
         }
@@ -239,7 +244,7 @@ public class Board extends JPanel implements ActionListener{
     private void adjustBoard(int row){
         Block [][] tmp = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         for (int y = 1; y < BOARD_HEIGHT; y++){
-            for (int x = 0; x < blocks[y].length; x++){
+            for (int x = 0; x < BOARD_WIDTH; x++){
                 if (blocks[y][x] != null){
                     if(y <= row){
                         tmp[y][x] = blocks[y-1][x];
