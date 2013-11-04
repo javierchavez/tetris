@@ -32,7 +32,7 @@ public class CollisionManager {
 
                     ++x;
 
-                    System.out.println("TEST=Location: " + x + " " + y);
+                    //System.out.println("TEST=Location: " + x + " " + y);
                     if (x < BOARD_WIDTH && board[y][x] == null && x < BOARD_WIDTH){
                         isOpen = true;
                     }
@@ -59,7 +59,7 @@ public class CollisionManager {
 
                     --x;
 
-                    System.out.println("TEST=Location: " + x + " " + y);
+                    //System.out.println("TEST=Location: " + x + " " + y);
                     if (x >= 0 && board[y][x] == null && x < BOARD_WIDTH){
                         isOpen = true;
                     }

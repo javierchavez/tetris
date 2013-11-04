@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.*;
+import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,15 +18,25 @@ import javax.swing.border.TitledBorder;
  *
  *
  */
-public class TetrisFrame extends JFrame{
+public class TetrisFrame extends JFrame implements KeyListener{
 
     private static final long serialVersionUID = -7803583554407246969L;
+    Board tetrisPanel = new Board();
+    private static final int DELAY = 1000;
+    private boolean isRunning = false;
+    JButton startPauseButton;
+
+    private Timer timer;
 
 
     public TetrisFrame(){
+        setFocusable(true);
+
         Color rightPanelColor = new Color(236, 240, 241);
         Font f = new Font("Dialog", Font.ITALIC, 20);
-
+        timer = new Timer(DELAY, tetrisPanel);
+        timer.setInitialDelay(0);
+        addKeyListener(this);
         //
         JLabel scoreNumLbl = new JLabel("0");
         JLabel linesNumLbl = new JLabel("0");
@@ -48,13 +60,26 @@ public class TetrisFrame extends JFrame{
         linesLabel.setFont(f);
         JLabel levelLabel = new JLabel("Level:");
         levelLabel.setFont(f);
-        JButton startPauseButton = new JButton("Start/Pause");
+        startPauseButton = new JButton("Start/Pause");
+
+        startPauseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+
+
+                startPauseButton.setText(isRunning ? "Start" : "Pause");
+                if(!isRunning) {
+                    isRunning = true;
+                    runGame();
+                } else {
+                    isRunning = false;
+                    timer.stop();
+                }
+            }
+        });
 
         //create a panel to show main game with black background
-        Board tetrisPanel = new Board();
-        tetrisPanel.addShape(new ZeeShape(new Block(Color.RED, Color.BLACK)));
+        //tetrisPanel.addShape(new ZeeShape(new Block(Color.RED, Color.BLACK)));
         tetrisPanel.setBackground(Color.BLACK);
-
 //        System.out.print("TETFR" + tetrisPanel.getWidth()+ " " + tetrisPanel.getHeight());
 
 
@@ -96,4 +121,53 @@ public class TetrisFrame extends JFrame{
         setTitle("Tetris");
 
     }
+
+    private void initPanel(){
+
+    }
+
+    private void runGame(){
+
+        tetrisPanel.addShape(new EllShape(new Block(Color.ORANGE, Color.BLACK)));
+        timer.start();
+        this.requestFocus();
+
+//        while (isRunning){
+//
+//        }
+    }
+
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_UP){
+            //System.out.print("up");
+
+            tetrisPanel.rotate();
+
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            //System.out.print("right");
+
+            tetrisPanel.moveRight();
+
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            tetrisPanel.moveLeft();
+
+
+            //System.out.print("left");
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+            tetrisPanel.moveDown();
+
+            //System.out.print("down");
+        }
+    }
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
 }

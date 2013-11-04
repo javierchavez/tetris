@@ -2,8 +2,7 @@ package edu.cs251.chavezl3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,30 +12,35 @@ import java.util.Map;
  *
  *
  */
-public class Board extends JPanel{
+public class Board extends JPanel implements ActionListener{
 
     private static final int BOARD_HEIGHT = 22;
     private static final int BOARD_WIDTH = 10;
 
-    private Block[][] blocks;
+    private static Block[][] blocks;
     private Object2D currentShape;
     private Map<String,Integer> currentShapePoints;
     private Point movement = new Point();
     private Dimension blockScaledDim = new Dimension ();
     private CollisionManager collisionManager = new CollisionManager();
+    PieceGenerator generator = new PieceGenerator();
+
+
 
 
     public Board(){
-        this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         setFocusable(true);
-        addKeyListener(new KL());
-        movement.setLocation(0,0);
+        this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
+//        this.addKeyListener(this);
+        movement.setLocation(0, 0);
+
 
 
     }
 
     public void addShape(Object2D s){
         currentShape = s;
+        repaint();
     }
 
 
@@ -44,30 +48,14 @@ public class Board extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if (currentShape != null){
+            drawBoard((Graphics2D) g);
 
-//        g.setColor(Color.BLACK);
-//        int width = getWidth ( );
-//        int height = getHeight ( );
-//        System.out.print(width + " " + height);
-//        for ( int row = 0; row <= BOARD_HEIGHT; row++ ) {
-//
-//            // Draw the hori lines
-//           g.drawLine (0, row * (height/BOARD_HEIGHT), width, row * (height/BOARD_HEIGHT));
-//
-//
-//            // Draw the vertical lines
-//            g.drawLine (row * (width/10), 0, row * (width/10), height);
-//        }
-//
-//        // Then draw the contents
-
-
-        drawBoard ((Graphics2D) g );
-        drawCurrentPiece((Graphics2D) g);
+        }
 
     }
 
-    private void drawCurrentPiece(Graphics2D g) {
+    private void drawBoard(Graphics2D g) {
         super.paintComponent(g);
 
         Object2D.Dimension2D dim = currentShape.getDimension();
@@ -78,6 +66,7 @@ public class Board extends JPanel{
 
         int cellSizeW = width/BOARD_WIDTH;
         int cellSizeH = height/BOARD_HEIGHT;
+
         blockScaledDim.setSize(cellSizeW,cellSizeH);
         currentShapePoints = new HashMap<String, Integer>();
         currentShapePoints.put("width",cellSizeW);
@@ -91,30 +80,14 @@ public class Board extends JPanel{
                 if(b != null) {
                     int x = (width/BOARD_WIDTH)*col;
                     int y = (height/BOARD_HEIGHT)*row;
-                    System.out.println("Location: " + x/blockScaledDim.getWidth() + " " + y/blockScaledDim.getHeight());
-//                    currentShape.getBlockAt(row,col).setData(x+movement.x, y+movement.y, cellSizeW, cellSizeH);
+
                     currentShapePoints.put(row + ""+col+"x",x+movement.x);
                     currentShapePoints.put(row + ""+col+"y",y+movement.y);
 
-                    currentShape.getBlockAt(row,col).paint(g, x + movement.x, y + movement.y, cellSizeW, cellSizeH);
+                    b.paint(g, x + movement.x, y + movement.y, cellSizeW, cellSizeH);
                 }
             }
         }
-//        System.out.print(width);
-
-    }
-
-    private void drawBoard(Graphics2D g) {
-        super.paintComponent(g);
-
-
-        int width = getWidth ( );
-        int height = getHeight ( );
-//        int cellsice = ((width/BOARDWIDTH)*(height/BOARDHEIGHT))/32;
-
-        int cellSizeW = width/BOARD_WIDTH;
-        int cellSizeH = height/BOARD_HEIGHT;
-
 
         for( int row = 0; row < BOARD_HEIGHT; row++ ){
             for ( int col = 0; col < BOARD_WIDTH; col++ ){
@@ -123,16 +96,21 @@ public class Board extends JPanel{
 
                     Block b =  blocks[row][col];
 
-                    int x = (width/BOARD_HEIGHT)*col;
-                    int y = (height/BOARD_WIDTH)*row;
+                    int x = (width/BOARD_WIDTH)*col;
+                    int y = (height/BOARD_HEIGHT)*row;
                     b.paint(g,x,y,cellSizeW,cellSizeH);
 
+
+
+                } else{
 
                 }
 
             }
 
+
         }
+
     }
 
     private void commit(){
@@ -140,77 +118,65 @@ public class Board extends JPanel{
         System.out.print("Commit");
         for( int row = 0; row < currentShape.getDimension().height; row++ ){
             for ( int col = 0; col < currentShape.getDimension().width; col++ ){
+                Block block = currentShape.getBlockAt(row,col);
+                if (block != null){
+                    int x = currentShapePoints.get(row + ""+col+"x")/currentShapePoints.get("width");
+                    int y = currentShapePoints.get(row + ""+col+"y")/currentShapePoints.get("height");
+                    blocks[y][x] = block;
 
+                }
 
             }
         }
+        currentShape = null;
 
     }
-    private void moveRight(){
+    public boolean moveRight(){
         if (collisionManager.isRightOpen(currentShape,blocks,currentShapePoints)){
             movement.x  += blockScaledDim.width;
             repaint();
+            return true;
         }
 
-
+        return false;
     }
-    private void moveLeft(){
+    public boolean moveLeft(){
         if (collisionManager.isLeftOpen(currentShape,blocks,currentShapePoints)){
             movement.x  -= blockScaledDim.width;
             repaint();
+            return true;
         }
+        return false;
 
     }
-    private void moveDown(){
-        if (collisionManager.isBottomOpen(currentShape,blocks,currentShapePoints)){
+    public boolean moveDown(){
+        if (collisionManager.isBottomOpen(currentShape, blocks, currentShapePoints)){
             movement.y  += blockScaledDim.height;
             repaint();
         } else{
             commit();
+            resetCurrShape();
         }
+
+        return false;
+
     }
 
-    private void rotate(){
-        if (collisionManager.isRotatable(currentShape,blocks,currentShapePoints)){
+    public void rotate(){
+        if (collisionManager.isRotatable(currentShape, blocks, currentShapePoints)){
             currentShape.rotate();
             repaint();
         }
 
     }
 
-    private class KL extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-            if (e.getKeyCode() == KeyEvent.VK_UP){
-                System.out.print("up");
-
-                rotate();
-
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-                System.out.print("right");
-
-                moveRight();
-
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT){
-                moveLeft();
-
-
-                System.out.print("left");
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-                moveDown();
-
-                System.out.print("down");
-            }
-        }
-        @Override
-        public void keyTyped(KeyEvent e) {}
-
-
-
-        @Override
-        public void keyReleased(KeyEvent e) {}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //System.out.println("run");
+        moveDown();
     }
+
+
 
     @Override
     public String toString() {
@@ -224,4 +190,17 @@ public class Board extends JPanel{
 
         return stringBuilder.toString();
     }
+
+    private void resetCurrShape(){
+
+        currentShape = generator.nextShape();
+        movement = new Point();
+        blockScaledDim = new Dimension ();
+        collisionManager = new CollisionManager();
+        repaint();
+
+        System.out.println(this.toString());
+    }
+
+
 }

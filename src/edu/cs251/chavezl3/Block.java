@@ -68,7 +68,7 @@ public class Block {
     @Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "[]";
+		return "blok";
 	}
 
 
