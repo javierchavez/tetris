@@ -22,13 +22,14 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     private static final long serialVersionUID = -7803583554407246969L;
     Board tetrisPanel = new Board(this);
-    private static final int DELAY = 1000;
+    private static int DELAY = 1000;
     private boolean isRunning = false;
     JButton startPauseButton;
-    JLabel scoreNumLbl, linesNumLbl;
+    JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
     private int score = 0;
     private PieceGenerator generator = new PieceGenerator();
     private Object2D currentPiece;
+    private int level = 1;
 
 
     private Timer timer;
@@ -47,7 +48,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
         //
         scoreNumLbl = new JLabel("0");
         linesNumLbl = new JLabel("0");
-        JLabel levelNumLbl = new JLabel("1");
+        levelNumLbl = new JLabel("1");
         JPanel nextShapePanel = new JPanel();
         JPanel controlPanel = new JPanel();
         JPanel rightPanel = new JPanel();
@@ -126,9 +127,9 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     }
 
-    private void initPanel(){
-
-    }
+//    private void initPanel(){
+//
+//    }
 
     private void runGame(){
 
@@ -149,15 +150,22 @@ public class TetrisFrame extends JFrame implements KeyListener{
             tetrisPanel.rotate();
 
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+
             tetrisPanel.moveRight();
 
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT){
+
             tetrisPanel.moveLeft();
 
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+
             tetrisPanel.moveDown();
 
         }
+//        else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+//
+//            //tetrisPanel.forceDown();
+//        }
     }
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -168,17 +176,36 @@ public class TetrisFrame extends JFrame implements KeyListener{
     public void keyReleased(KeyEvent e) {}
 
     public void setScore(int score){
-        this.score += score;
+        this.score = score;
         scoreNumLbl.setText(String.valueOf(this.score));
     }
 
+
     public void setLines(int lines){
-        this.lines += lines;
+        this.lines = lines;
         linesNumLbl.setText(String.valueOf(this.lines));
+
     }
 
     public void setCurrentPiece(Object2D piece){
         this.currentPiece = piece;
+    }
+
+    public void setLevel(int level){
+        this.level = level;
+        levelNumLbl.setText(String.valueOf(this.level));
+        if (this.level > 0 && this.level % 2 == 0){
+            DELAY -= 100;
+            if (DELAY == 0){
+                timer.stop();
+            }   else{
+                timer.setDelay(DELAY);
+
+            }
+            System.out.println("Time: "+ DELAY);
+
+        }
+
     }
 
 }

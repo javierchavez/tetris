@@ -25,8 +25,10 @@ public class Board extends JPanel implements ActionListener{
     private CollisionManager collisionManager = new CollisionManager();
     private PieceGenerator generator = new PieceGenerator();
     private TetrisFrame tetrisFrame;
-    private int multiplierScore = 1;
+    private Map<Integer,Integer> multiplierScore;
     private int lines = 0;
+    private int score;
+    private int level=1;
 
 
 
@@ -39,6 +41,12 @@ public class Board extends JPanel implements ActionListener{
 //    }
 
     public Board(TetrisFrame tetrisFrame) {
+        multiplierScore =new HashMap<Integer, Integer>();// 40,100,300,1200};
+        multiplierScore.put(0,20);
+        multiplierScore.put(1,40);
+        multiplierScore.put(2,100);
+        multiplierScore.put(3,300);
+        multiplierScore.put(4,1200);
         this.tetrisFrame = tetrisFrame;
         setFocusable(true);
         this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
@@ -155,14 +163,23 @@ public class Board extends JPanel implements ActionListener{
         if (collisionManager.isBottomOpen(currentShape, blocks, currentShapePoints)){
             movement.y  += blockScaledDim.height;
             repaint();
+            return true;
         } else{
             commit();
             checkRows();
             resetCurrShape();
+            return false;
         }
 
-        return false;
+    }
 
+    public boolean forceDown(){
+        boolean s = moveDown();
+        if (s){
+            forceDown();
+
+        }
+        return false;
     }
 
     public void rotate(){
@@ -177,6 +194,7 @@ public class Board extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         //System.out.println("run");
         moveDown();
+
     }
 
 
@@ -206,6 +224,7 @@ public class Board extends JPanel implements ActionListener{
     }
     private void checkRows(){
 
+        int comboMultiplier = 0;
         boolean isRowFilled = false, wasFilled = false;
         int row;
         for( row = 0; row < BOARD_HEIGHT; row++ ){
@@ -227,19 +246,26 @@ public class Board extends JPanel implements ActionListener{
                 adjustBoard(row);
                 //reset row sine the board has chnagd
                 row = 0;
-                multiplierScore++;
-                tetrisFrame.setLines(++lines);
+                comboMultiplier++;
+                lines++;
+
 
             }
 
         }
-        if (wasFilled ){
-            //send to main frame to be displayed to user
-            tetrisFrame.setScore(10*multiplierScore);
-            //reset score
-            multiplierScore = 1;
+        if (wasFilled){
+            score += multiplierScore.get(comboMultiplier);
 
         }
+
+        if ( lines > 0 && lines % 5 == 0) {
+            level++;
+            tetrisFrame.setLevel(level);
+
+        }
+        //send to main frame to be displayed to user
+        tetrisFrame.setLines(lines);
+        tetrisFrame.setScore(score);
     }
 
     private void adjustBoard(int target){
