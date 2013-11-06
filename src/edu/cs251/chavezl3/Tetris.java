@@ -19,7 +19,7 @@ public class Tetris {
                 TetrisFrame frame = new TetrisFrame();
 
                 frame.setVisible(true);
-                frame.setSize(640, 740);
+                frame.setSize(450, 740);
                 frame.setLocationRelativeTo(null); //center on screen
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

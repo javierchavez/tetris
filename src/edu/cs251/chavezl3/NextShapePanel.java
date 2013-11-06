@@ -38,18 +38,18 @@ public class NextShapePanel extends JPanel{
 
 
         int cellSizeW = width/8;
-        int cellSizeH = height/6;
+        int cellSizeH = height/11;
 
         for(int row = 0; row < shape.getDimension().height; ++row) {
             for (int col = 0; col < shape.getDimension().width; ++col) {
                 Block b = shape.getBlockAt(row, col);
                 if(b != null) {
                     int x = ((width/8)*col);
-                    int y = (height/6)*row;
+                    int y = (height/11)*row;
 
                     //rough midpoint
-                    x = x + (cellSizeW*3);
-                    y = y + (cellSizeH*2);
+                    x = x + (cellSizeW*2);
+                    y = y + (cellSizeH*4);
 
                     b.paint(g, x, y , cellSizeW, cellSizeH);
                 }

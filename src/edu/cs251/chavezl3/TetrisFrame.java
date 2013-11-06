@@ -1,9 +1,6 @@
 package edu.cs251.chavezl3;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Timer;
 import javax.swing.JButton;
@@ -43,8 +40,8 @@ public class TetrisFrame extends JFrame implements KeyListener{
         setFocusable(true);
         currentPiece = generator.nextShape();
 
-        Color rightPanelColor = new Color(236, 240, 241);
-        Font f = new Font("Dialog", Font.ITALIC, 20);
+        Color rightPanelColor = Color.white;
+        Font f = new Font("Dialog", Font.BOLD, 20);
         timer = new Timer(DELAY, tetrisPanel);
         timer.setInitialDelay(0);
         addKeyListener(this);
@@ -72,6 +69,11 @@ public class TetrisFrame extends JFrame implements KeyListener{
         JLabel levelLabel = new JLabel("Level:");
         levelLabel.setFont(f);
         startPauseButton = new JButton("Start/Pause");
+        startPauseButton.setBorderPainted(false);
+        startPauseButton.setBackground(Color.decode("#b2f3b2"));
+        startPauseButton.setForeground(Color.white);
+        startPauseButton.setOpaque(true);
+        rightPanel.setPreferredSize(new Dimension(160,30));
 
         startPauseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -80,24 +82,30 @@ public class TetrisFrame extends JFrame implements KeyListener{
                 startPauseButton.setText(isRunning ? "Start" : "Pause");
                 if(!isRunning) {
                     isRunning = true;
+                    startPauseButton.setBackground(Color.decode("#ff4d4d"));
                     runGame();
                 } else {
                     isRunning = false;
                     timer.stop();
+                    startPauseButton.setBackground(Color.decode("#b2f3b2"));
+
                 }
             }
         });
 
         //create a panel to show main game with black background
-        tetrisPanel.setBackground(Color.BLACK);
+        tetrisPanel.setBackground(Color.WHITE);
+
+//        tetrisPanel.setPreferredSize(new Dimension(100,110));
+
 
         //main container only hold tetris and right panel in grid form
         Container pane = this.getContentPane();
-        pane.setLayout(new GridLayout());
+        pane.setLayout(new BorderLayout());
 
         //add two panels to main
-        pane.add(tetrisPanel);
-        pane.add(rightPanel);
+        pane.add(tetrisPanel, BorderLayout.CENTER);
+        pane.add(rightPanel, BorderLayout.LINE_END);
 
 
         // holds controls for game

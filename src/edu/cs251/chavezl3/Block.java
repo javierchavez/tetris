@@ -50,16 +50,17 @@ public class Block {
      * @param cellSizeH The height of the square (for scaling)
      */
     public void paint(Graphics g, int x, int y, int cellSizeW, int cellSizeH) {
-        //point.setLocation(x, y);
-        //blockSDim.setSize(cellSizeW,cellSizeH);
+        //this is strictly for aesthetics
+        cellSizeH -=2;
+        cellSizeW -=2;
         g.setColor(fillColor);
 
-        //g.fillRect(x, y, cellSize, cellSize);
-        g.fillRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW+cellSizeH/2)/4, (cellSizeW+cellSizeH/2)/4);
+        g.fillRect(x, y, cellSizeW, cellSizeH);
+//        g.fillRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW+cellSizeH/2)/4, (cellSizeW+cellSizeH/2)/4);
 
         g.setColor(lineColor);
-        //g.drawRect(x, y, cellSize, cellSize);
-        g.drawRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW + cellSizeH / 2) / 4, (cellSizeW + cellSizeH / 2) / 4);
+        g.drawRect(x, y, cellSizeW, cellSizeH);
+//        g.drawRoundRect(x, y, cellSizeW, cellSizeH, (cellSizeW + cellSizeH / 2) / 4, (cellSizeW + cellSizeH / 2) / 4);
 
     }
 
