@@ -65,7 +65,7 @@ public class Board extends JPanel implements ActionListener{
         super.paintComponent(g);
 
         if (isLost){
-            g.setColor(Color.WHITE);
+            g.setColor(Color.BLACK);
             g.drawString("Game over!",getWidth()/2,getHeight()/2);
         }
         else if (currentShape != null){

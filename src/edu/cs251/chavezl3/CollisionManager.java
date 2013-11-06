@@ -21,6 +21,7 @@ public class CollisionManager {
 //
 //    }
     public boolean isRightOpen(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints){
+        if(piece == null){return false;}
         boolean isOpen = false;
 
         for(int row = 0; row < piece.getDimension().height; ++row) {
@@ -48,6 +49,7 @@ public class CollisionManager {
 
     }
     public boolean isLeftOpen(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints){
+        if(piece == null){return false;}
         boolean isOpen = false;
 
         for(int row = 0; row < piece.getDimension().height; ++row) {
@@ -75,6 +77,7 @@ public class CollisionManager {
 
     }
     public boolean isRotatable(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints){
+        if(piece == null){return false;}
         ArrayList<Integer> spacesH = new ArrayList<Integer>();
         ArrayList<Integer> spacesV = new ArrayList<Integer>();
 
@@ -113,6 +116,7 @@ public class CollisionManager {
     }
 
     public boolean isBottomOpen(Object2D piece, Block[][] board, Map<String, Integer> currentShapePoints) {
+        if(piece == null){return false;}
         boolean isOpen = false;
 
         for(int row = 0; row < piece.getDimension().height; ++row) {

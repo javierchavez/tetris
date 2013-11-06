@@ -15,7 +15,7 @@ import javax.swing.border.TitledBorder;
  *
  *
  */
-public class TetrisFrame extends JFrame implements KeyListener{
+public class TetrisFrame extends JFrame implements KeyListener {
 
     private static final long serialVersionUID = -7803583554407246969L;
     private Board tetrisPanel = new Board(this);
