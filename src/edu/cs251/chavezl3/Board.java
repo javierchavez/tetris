@@ -56,6 +56,8 @@ public class Board extends JPanel implements ActionListener{
 
     public void addShape(Object2D s){
         currentShape = s;
+        tetrisFrame.setNextPiece(nextShape);
+
         repaint();
     }
 

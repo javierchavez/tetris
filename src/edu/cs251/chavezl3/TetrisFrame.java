@@ -21,15 +21,16 @@ import javax.swing.border.TitledBorder;
 public class TetrisFrame extends JFrame implements KeyListener{
 
     private static final long serialVersionUID = -7803583554407246969L;
-    Board tetrisPanel = new Board(this);
+    private Board tetrisPanel = new Board(this);
     private static int DELAY = 1000;
     private boolean isRunning = false;
-    JButton startPauseButton;
-    JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
+    private JButton startPauseButton;
+    private JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
     private int score = 0;
     private PieceGenerator generator = new PieceGenerator();
     private Object2D currentPiece,nextPiece;
     private int level = 1;
+    private NextShapePanel nextShapePanel;
 
 
     private Timer timer;
@@ -49,7 +50,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
         scoreNumLbl = new JLabel("0");
         linesNumLbl = new JLabel("0");
         levelNumLbl = new JLabel("1");
-        JPanel nextShapePanel = new JPanel();
+        nextShapePanel = new NextShapePanel();
         JPanel controlPanel = new JPanel();
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GridLayout(3,1));
@@ -210,5 +211,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     public void setNextPiece(Object2D nextPiece) {
         this.nextPiece = nextPiece;
+        nextShapePanel.setShape(nextPiece);
+
     }
 }
