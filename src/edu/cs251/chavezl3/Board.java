@@ -29,9 +29,7 @@ public class Board extends JPanel implements ActionListener{
     private int lines = 0;
     private int score;
     private int level=1;
-
-
-
+    private boolean isLost = false;
 
 
 //    public Board(){
@@ -66,7 +64,11 @@ public class Board extends JPanel implements ActionListener{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (currentShape != null){
+        if (isLost){
+            g.setColor(Color.WHITE);
+            g.drawString("Game over!",getWidth()/2,getHeight()/2);
+        }
+        else if (currentShape != null){
             drawBoard((Graphics2D) g);
 
         }
@@ -163,17 +165,21 @@ public class Board extends JPanel implements ActionListener{
 
     }
     public boolean moveDown(){
-        if (collisionManager.isBottomOpen(currentShape, blocks, currentShapePoints)){
-            movement.y  += blockScaledDim.height;
-            repaint();
-            return true;
-        } else{
-            commit();
-            checkRows();
-            resetCurrShape();
-            return false;
-        }
+        if (!isLost){
 
+            if ( collisionManager.isBottomOpen(currentShape, blocks, currentShapePoints)){
+                movement.y  += blockScaledDim.height;
+                repaint();
+                return true;
+            } else{
+                commit();
+                checkRows();
+                resetCurrShape();
+                return false;
+
+            }
+        }
+        return false;
     }
 
     public boolean forceDown(){
@@ -223,6 +229,7 @@ public class Board extends JPanel implements ActionListener{
         blockScaledDim = new Dimension ();
         collisionManager = new CollisionManager();
         tetrisFrame.setCurrentPiece(currentShape);
+        checkRows();
         repaint();
 
     }
@@ -231,6 +238,11 @@ public class Board extends JPanel implements ActionListener{
         int comboMultiplier = 0;
         boolean isRowFilled = false, wasFilled = false;
         int row;
+        if (blocks[1][1]!=null){
+            isLost = true;
+            tetrisFrame.isLost(true);
+            return;
+        }
         for( row = 0; row < BOARD_HEIGHT; row++ ){
             for ( int col = 0; col < BOARD_WIDTH; col++ ){
 
@@ -270,6 +282,7 @@ public class Board extends JPanel implements ActionListener{
         //send to main frame to be displayed to user
         tetrisFrame.setLines(lines);
         tetrisFrame.setScore(score);
+
     }
 
     private void adjustBoard(int target){
@@ -294,6 +307,7 @@ public class Board extends JPanel implements ActionListener{
 
 
     }
+
 
 
 }

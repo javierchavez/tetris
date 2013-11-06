@@ -23,7 +23,9 @@ public class TetrisFrame extends JFrame implements KeyListener{
     private static final long serialVersionUID = -7803583554407246969L;
     private Board tetrisPanel = new Board(this);
     private static int DELAY = 1000;
+
     private boolean isRunning = false;
+
     private JButton startPauseButton;
     private JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
     private int score = 0;
@@ -31,11 +33,11 @@ public class TetrisFrame extends JFrame implements KeyListener{
     private Object2D currentPiece,nextPiece;
     private int level = 1;
     private NextShapePanel nextShapePanel;
-
-
     private Timer timer;
-    private int lines;
 
+
+    private int lines;
+    private boolean isLost = false;
 
     public TetrisFrame(){
         setFocusable(true);
@@ -128,21 +130,21 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     }
 
+
 //    private void initPanel(){
-//
-//    }
 
     private void runGame(){
+        if (!isLost){
+            tetrisPanel.addShape(currentPiece);
+            timer.start();
+            this.requestFocus();
 
-        tetrisPanel.addShape(currentPiece);
-        timer.start();
-        this.requestFocus();
+        }
 
 //        while (isRunning){
 //
 //        }
     }
-
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -165,28 +167,29 @@ public class TetrisFrame extends JFrame implements KeyListener{
         }
         else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 
-            tetrisPanel.forceDown();
+//            tetrisPanel.forceDown();
         }
     }
+
+
     @Override
     public void keyTyped(KeyEvent e) {}
-
-
-
     @Override
     public void keyReleased(KeyEvent e) {}
+
+
 
     public void setScore(int score){
         this.score = score;
         scoreNumLbl.setText(String.valueOf(this.score));
     }
 
-
     public void setLines(int lines){
         this.lines = lines;
         linesNumLbl.setText(String.valueOf(this.lines));
 
     }
+
 
     public void setCurrentPiece(Object2D piece){
         this.currentPiece = piece;
@@ -212,6 +215,21 @@ public class TetrisFrame extends JFrame implements KeyListener{
     public void setNextPiece(Object2D nextPiece) {
         this.nextPiece = nextPiece;
         nextShapePanel.setShape(nextPiece);
+
+    }
+
+    public void isLost(boolean lost) {
+        isLost = lost;
+        timer.stop();
+
+    }
+    public void setRunning(boolean running) {
+        isRunning = running;
+        if(!isRunning ){
+            timer.stop();
+        } else if(!timer.isRunning() && isRunning){
+            timer.start();
+        }
 
     }
 }
