@@ -28,7 +28,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
     JLabel scoreNumLbl, linesNumLbl, levelNumLbl;
     private int score = 0;
     private PieceGenerator generator = new PieceGenerator();
-    private Object2D currentPiece;
+    private Object2D currentPiece,nextPiece;
     private int level = 1;
 
 
@@ -162,10 +162,10 @@ public class TetrisFrame extends JFrame implements KeyListener{
             tetrisPanel.moveDown();
 
         }
-//        else if (e.getKeyCode() == KeyEvent.VK_SPACE){
-//
-//            //tetrisPanel.forceDown();
-//        }
+        else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+
+            tetrisPanel.forceDown();
+        }
     }
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -208,4 +208,7 @@ public class TetrisFrame extends JFrame implements KeyListener{
 
     }
 
+    public void setNextPiece(Object2D nextPiece) {
+        this.nextPiece = nextPiece;
+    }
 }

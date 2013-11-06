@@ -18,7 +18,7 @@ public class Board extends JPanel implements ActionListener{
     private static final int BOARD_WIDTH = 10;
 
     private static Block[][] blocks;
-    private Object2D currentShape;
+    private Object2D currentShape,nextShape;
     private Map<String,Integer> currentShapePoints;
     private Point movement = new Point();
     private Dimension blockScaledDim = new Dimension ();
@@ -51,6 +51,7 @@ public class Board extends JPanel implements ActionListener{
         setFocusable(true);
         this.blocks = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         movement.setLocation(0, 0);
+        nextShape =    generator.nextShape();
     }
 
     public void addShape(Object2D s){
@@ -174,11 +175,10 @@ public class Board extends JPanel implements ActionListener{
     }
 
     public boolean forceDown(){
-        boolean s = moveDown();
-        if (s){
-            forceDown();
 
-        }
+
+        moveDown();
+
         return false;
     }
 
@@ -214,7 +214,9 @@ public class Board extends JPanel implements ActionListener{
 
     private void resetCurrShape(){
 
-        currentShape = generator.nextShape();
+        currentShape =  nextShape;
+        nextShape =    generator.nextShape();
+        tetrisFrame.setNextPiece(nextShape);
         movement = new Point();
         blockScaledDim = new Dimension ();
         collisionManager = new CollisionManager();
@@ -258,7 +260,7 @@ public class Board extends JPanel implements ActionListener{
 
         }
 
-        if ( lines > 0 && lines % 5 == 0) {
+        if (comboMultiplier > 0 && lines > 0 && lines % 5 == 0) {
             level++;
             tetrisFrame.setLevel(level);
 
