@@ -12,7 +12,7 @@ import java.util.Map;
  *
  *
  */
-public class Board extends JPanel implements ActionListener{
+public class Board extends JPanel implements ActionListener, Object2D{
 
     private static final int BOARD_HEIGHT = 22;
     private static final int BOARD_WIDTH = 10;
@@ -190,7 +190,7 @@ public class Board extends JPanel implements ActionListener{
         return false;
     }
 
-    public void rotate(){
+    public void rotateShape(){
         if (collisionManager.isRotatable(currentShape, blocks, currentShapePoints)){
             currentShape.rotate();
             repaint();
@@ -259,7 +259,7 @@ public class Board extends JPanel implements ActionListener{
             if(isRowFilled){
 
                 wasFilled = true;
-                adjustBoard(row);
+                removeRow(row);
                 //reset row sine the board has chnagd
                 row = 0;
                 comboMultiplier++;
@@ -285,18 +285,15 @@ public class Board extends JPanel implements ActionListener{
 
     }
 
-    private void adjustBoard(int target){
+    private void removeRow(int filledRow){
         Block [][] tmp = new Block[BOARD_HEIGHT][BOARD_WIDTH];
         for (int y = 1; y < BOARD_HEIGHT; y++){
             for (int x = 0; x < BOARD_WIDTH; x++){
-                if (blocks[y][x] != null && blocks[y-1][x] != null){
-                    if(y <= target ){
-                        tmp[y][x] = blocks[y-1][x];
+                if (blocks[y][x] != null && blocks[y-1][x] != null && y <= filledRow){
+                    tmp[y][x] = blocks[y-1][x];
 
-                    }   else {
-                        tmp[y][x] = blocks[y][x];
-
-                    }
+                } else if(blocks[y][x] != null && y > filledRow){
+                    tmp[y][x] = blocks[y][x];
 
                 }
 
@@ -308,6 +305,20 @@ public class Board extends JPanel implements ActionListener{
 
     }
 
+    @Override
+    public void rotate() {
+        throw new NoSuchMethodError();
+    }
+
+    @Override
+    public Dimension2D getDimension() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Block getBlockAt(int row, int col) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 
 }

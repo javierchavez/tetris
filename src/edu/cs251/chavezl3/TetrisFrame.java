@@ -158,7 +158,7 @@ public class TetrisFrame extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_UP){
-            tetrisPanel.rotate();
+            tetrisPanel.rotateShape();
 
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 
@@ -240,4 +240,6 @@ public class TetrisFrame extends JFrame implements KeyListener {
         }
 
     }
+
+
 }
